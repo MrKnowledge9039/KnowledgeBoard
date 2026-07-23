@@ -1,8 +1,12 @@
-import usb_hid
+import board
 
-usb_hid.enable(
-    (
-        usb_hid.Device.KEYBOARD,
-        usb_hid.Device.CONSUMER_CONTROL,
-    )
+from kmk.bootcfg import bootcfg
+
+bootcfg(
+    sense=board.GP0,  # column
+    source=board.GP8, # row
+    midi=False,
+    mouse=False,
+    storage=False,
+    usb_id={'manufacturer': 'MrKnowledge', 'product': 'KnowledgeBoard'},
 )

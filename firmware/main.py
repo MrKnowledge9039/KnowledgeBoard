@@ -1,83 +1,94 @@
+print("Starting")
+
 import board
-import neopixel
-import time
+
 from kmk.kmk_keyboard import KMKKeyboard
 from kmk.keys import KC
-from kmk.scanners import DiodeOrientation
-from kmk.modules.encoder import EncoderHandler
 from kmk.modules.layers import Layers
-from kmk.modules.tapdance import TapDance
+from kmk.modules.encoder import EncoderHandler
 from kmk.extensions.media_keys import MediaKeys
+from kmk.extensions.RGB import RGB
 
 keyboard = KMKKeyboard()
-keyboard.modules.append(Layers())
-keyboard.modules.append(EncoderHandler())
-keyboard.modules.append(TapDance())
+layers = Layers()
+encoder_handler = EncoderHandler()
+
+rgb = RGB(pixel_pin=board.GP3, num_pixels=9)
+keyboard.extensions.append(rgb)
+
+keyboard.modules = [layers, encoder_handler]
 keyboard.extensions.append(MediaKeys())
 
-# mega tvrdy reset!
-pixel = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=0.3, auto_write=True)
+keyboard.col_pins = (board.GP4, board.GP5, board.GP10)
+keyboard.row_pins = (board.GP6, board.GP7, board.GP8, board.GP9,)
 
-def force_reset_led(color):
-    # 1. resetik
-    pixel[0] = (0, 0, 0)
-    time.sleep(0.01) # pauza, ale jako fakt krátká
-    # 2. nova barva
-    pixel[0] = color
-    pixel.show()
 
-force_reset_led((0, 0, 255)) # blueeee
+Zoom_in = KC.LCTRL(KC.EQUAL)
+Zoom_out = KC.LCTRL(KC.MINUS)
 
-# tlačitka pro reset,...
-class LayerResetKey:
-    def __init__(self, layer, color):
-        self.layer = layer
-        self.color = color
+encoder_handler.pins = (
+    (board.GP0, board.GP1, None), # encoder #1 
+    (board.GP2, board.GP1, None), # encoder #2
+    )
 
-    def on_press(self, keyboard, coord_int=None):
-        force_reset_led(self.color)
-        return KC.TO(self.layer).on_press(keyboard, coord_int)
+LayerNum = 0
 
-    def on_release(self, keyboard, coord_int=None):
-        return KC.TO(self.layer).on_release(keyboard, coord_int)
+LUP = KC.FD(LayerNum - 1) if LayerNum > 0 else KC.FD(0)
+LDN = KC.FD(LayerNum + 1) if LayerNum < 5 else KC.FD(5)
 
-# definice resetovacích věci
-GO_L0 = LayerResetKey(0, (0, 0, 255))
-GO_L1 = LayerResetKey(1, (255, 0, 0))
-GO_L2 = LayerResetKey(2, (0, 255, 0))
+encoder_handler.map = [ (( KC.VOLD, KC.VOLU), (KC.BRID, KC.BRIU),), # Default
+                        ((Zoom_out, Zoom_in), (KC.LBRC, KC.RBRC),), # Zoom / Krita Layer will get upgrade
+                        ((KC.RIGHT, KC.LEFT), (KC.DOWN, KC.UP),),   # DMXC Pos
+                        ((KC.MS_RT, KC.MS_LT), (KC.MW_UP, KC.MW_DN),),   # Move Mouse
+                        ((KC.FD(LUP), KC.FD(LDN)), (KC.NO, KC.NO),),   # Switch Layer
+                      ]
 
-# matice
-keyboard.row_pins = (board.D0, board.D1, board.D2)
-keyboard.col_pins = (board.D9, board.D10, board.D3)
-keyboard.diode_orientation = DiodeOrientation.ROW2COL
 
-encoder_handler = keyboard.modules[1]
-encoder_handler.pins = ((board.D4, board.D5, None, True), (board.D8, board.D7, None, True))
-encoder_handler.divisor = 4
-encoder_handler.map = [
-    ((KC.AUDIO_VOL_UP, KC.AUDIO_VOL_DOWN), (KC.LCTL(KC.TAB), KC.LCTL(KC.LSFT(KC.TAB)))),
-    ((KC.MEDIA_NEXT_TRACK, KC.MEDIA_PREV_TRACK), (KC.MWEL_UP, KC.MWEL_DOWN)),
-    ((KC.LCTL(KC.PENT), KC.LCTL(KC.PMNS)), (KC.PGUP, KC.PGDN)),
-]
+class LayerRGB(RGB):
+    def on_layer_change(self, layer):
+        if layer == 0:
+            rgb.set_hsv(170, self.sat_default, self.val_default, 0) # blue
+        elif layer == 1:
+            rgb.set_hsv(170, self.sat_default, self.val_default, 1)
+        elif layer == 2:
+            rgb.set_hsv(170, self.sat_default, self.val_default, 2)
+        elif layer == 4:
+            rgb.set_hsv(170, 0, self.val_default, 3)               
+        elif layer == 4:
+                    rgb.set_hsv(170, 0, self.val_default, 3)       
+        # update the LEDs manually if no animation is active:
+        self.show()
 
-# mapování vrstev přes SW9
+
+
 keyboard.keymap = [
-    [   # modricka barvicka L0
-        KC.F14,         KC.F15,         KC.F16,
-        KC.LALT(KC.F4), KC.LGUI(KC.L),  KC.LGUI(KC.LSFT(KC.S)),
-        KC.LCTL(KC.C),  KC.LCTL(KC.V),  KC.TD(KC.AUDIO_MUTE, GO_L1) 
+    [
+        KC.MO(5), KC.NO, KC.MUTE,
+        KC.N1, KC.N2, KC.N3,
+        KC.N4, KC.N5, KC.N6,
+        KC.N7, KC.N8, KC.N9,
     ],
-    [   # cervena barva L1
-        KC.MEDIA_PLAY_PAUSE, KC.CALCULATOR,  KC.LCTL(KC.LSFT(KC.ESC)),
-        KC.LGUI(KC.LEFT),    KC.LGUI(KC.UP),  KC.LGUI(KC.RIGHT),
-        KC.LCTL(KC.A),       KC.LCTL(KC.X),  KC.TD(KC.AUDIO_MUTE, GO_L2) 
+    [
+        KC.MO(5), KC.NO, KC.MUTE,
+        KC.F13, KC.F14, KC.F15,
+        KC.F16, KC.F17, KC.F18,
+        KC.F19, KC.F20, KC.F21,
     ],
-    [   # zelena barva L2
-        KC.F5,               KC.F10,          KC.F11,
-        KC.LCTL(KC.F),       KC.LCTL(KC.B),   KC.LCTL(KC.P),
-        KC.LCTL(KC.LSFT(KC.K)), KC.LCTL(KC.LSFT(KC.P)), KC.TD(KC.AUDIO_MUTE, GO_L0) 
+    [
+        KC.MO(5), KC.NO, KC.MUTE,
+        KC.N1, KC.N2, KC.N3,
+        KC.Q, KC.W, KC.E,
+        KC.A, KC.S, KC.D,
+    ],
+    [
+        KC.MO(5), KC.NO, KC.MUTE,
+        KC.RGB_HUI, KC.RGB_HUD, KC.RGB_TOG,
+        KC.RGB_VAI, KC.RGB_VAD, KC.NO,
+        KC.NO, KC.NO, KC.NO,
     ]
 ]
+
+rgb.set_hsv_fill(0, 0, rgb.val_default)
 
 if __name__ == '__main__':
     keyboard.go()
