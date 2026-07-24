@@ -9,19 +9,19 @@
 
 | **Schematic** | **PCB** |
 |---------------|---------|
-|![](link)|![](link)|
+|![](https://github.com/MrKnowledge9039/KnowledgeBoard/blob/main/assets/PCB_Schematic.png)|![](https://github.com/MrKnowledge9039/KnowledgeBoard/blob/main/assets/PCB_Layout.png)|
 
 ## CAD
 The Case Top and Bottom were designed using onshape. It helped that I had some experience in with 3D-Design. It was compared to that because I only used Extrude nothing complicated. Assembled are the seperate case parts through screws.
-![](link)
-![](link)
+![](https://github.com/MrKnowledge9039/KnowledgeBoard/blob/main/assets/CAD_TopView.png)
+![](https://github.com/MrKnowledge9039/KnowledgeBoard/blob/main/assets/CAD_Isometric.png)
 
 ## Firmware
 
 The firmware is KMK, because it seemed easier for this projekt then QMK and is pretty small but uses every feature the board has and multiple layers.
 
 ## Notes
-Making the pad was fun ^.^ but I was just too paranoid that something would go wrong and made 15+ revisions lol. Ended up learning how to use OpenSCAD and FreeCAD.
+Making the pad was great and I will definately progress doing also hardware projects. The Hackpad is a great starting point to get into this PCB/3D-Design.
 
 ## BOM
 - 1 SEEEDUINO XIAO RP2040
