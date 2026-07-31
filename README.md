@@ -1,5 +1,5 @@
 # KnowledgeBoard
- Hi! This is my submission for hackpad as part of stardance program! This was made for Hackpad v5.
+ Hi! This is my submission for hackpad as part of stardance program! This was made for Hackpad v5 as part of stardance mission.
 
 ## Overview
  My very first hardware project: My own Macropad called KnowledgeBoard (I know very creative), completely designed by me, with 3x3 Keys, each with a SK6812 MINI-E and 2 Rotary Encoders as well as KMK firmware. I made it because I like learning new things. Multiple times I thought macro board would be very useful but I always worked around it instead of building one. And with the opportunity of Hackpad I wanted to try to build a macroboard that suits my needs. It should be compact, simple and at the same time versatile for different jobs like replacing a Streamdeck and improving the workflow with Krita or DMXC.

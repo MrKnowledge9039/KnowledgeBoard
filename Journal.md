@@ -68,3 +68,8 @@ Time ca. 3h
  After reviewing everything I discovered that the smaller case I chose to use had no holes for the heat insets. So I added that (also had also to change the Edge.Cuts Layer on the PCB). It was nice to be so quick with everything after the first attempt took so long.
 
  Time ca. 30min
+
+# July 31
+ As I was looking around in Slack " discovered that the DRC-footprint problem was a problem that many people ran into and the go to solution was apparently to just ignore the DRC errors. I changed the footprints back to the recomended ones used in the tutorial and also added tolerances off 0.2mm and now my board is pre-flight checked.
+
+ Time ca. 20min
