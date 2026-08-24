@@ -1,4 +1,4 @@
-# KnowledgeBoard Journal
+# KnowledgeBoard Design Journal
 
 # June 28
 ## First Exploration of KiCAD
@@ -73,3 +73,6 @@ Time ca. 3h
  As I was looking around in Slack " discovered that the DRC-footprint problem was a problem that many people ran into and the go to solution was apparently to just ignore the DRC errors. I changed the footprints back to the recomended ones used in the tutorial and also added tolerances off 0.2mm and now my board is pre-flight checked.
 
  Time ca. 20min
+
+Note at the end:
+ KiCAD has apparently a tool that autoroutes the wires... I wish I knew earlier.
