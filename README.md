@@ -18,7 +18,7 @@ The Case Top and Bottom were designed using onshape. It helped that I had some e
 
 ## Firmware
 
-The firmware is KMK, because it seemed easier for this project then QMK and is pretty small but uses every feature the board has and multiple layers.
+The firmware is KMK, because it seemed easier for this project then QMK and is pretty small but has every feature the board uses and supports multiple layers.
 
 ## Notes
 Making the pad was great and I will definitely progress doing also hardware projects. The Hackpad is a great starting point to get into this PCB/3D-Design.
@@ -32,3 +32,6 @@ Making the pad was great and I will definitely progress doing also hardware proj
 - 2x EC11 Rotary encoders
 - 4x M3x16mm screws
 - 4x M3x16mm heatset inserts
+
+## License
+ CC-BY-SA
